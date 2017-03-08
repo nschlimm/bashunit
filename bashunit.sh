@@ -8,6 +8,7 @@ reset=`tput sgr0`
 blackfg=$(tput setaf 0) 
 defaultfg=$(tput setaf 9) 
 defaultbg=$(tput setab 9)
+standardout=true
 
 function testHeadLine() {
    headline="$1"
@@ -32,8 +33,9 @@ function printRed () {
 function assertContains () {
 	commands="$1"
 	expectedoutregexp="$2"
-	testHeadLine "Test assert - command: $commands - assertion: $expectedoutregexp"
+	testHeadLine "Test assert contains - command: $commands - assertion: $expectedoutregexp"
 	results=$($commands 2>&1)
+	if [[ $standardout == "true" ]]; then echo -e "$results"; fi 
 	if echo "$results" | grep -q "$expectedoutregexp"; then
 		printGreen "SUCCESS: found \"$expectedoutregexp\" in command output"
 		((testsuccess++))
@@ -47,8 +49,9 @@ function assertContains () {
 function assertNotContains () {
 	commands="$1"
 	expectedoutregexp="$2"
-	testHeadLine "Test assert - command: $commands - assertion: not $expectedoutregexp"
+	testHeadLine "Test assert contains - command: $commands - assertion: not $expectedoutregexp"
 	results=$($commands 2>&1)
+	if [[ $standardout == "true" ]]; then echo -e "$results"; fi 
 	if ! echo "$results" | grep -q "$expectedoutregexp"; then
 		printGreen "SUCCESS: not found \"$expectedoutregexp\" in command output"
 		((testsuccess++))
@@ -64,8 +67,8 @@ function assertCheckContains () {
 	commands="$1"
 	expectedtest="$2"
 	expectedtestoutregexp="$3"
-	testHeadLine "Test assert with - command: $commands - test command: $expectedtest - assertion: $expectedtestoutregexp"
-	$commands
+	testHeadLine "Test assert check contains - command: $commands - check: $expectedtest - assertion: $expectedtestoutregexp"
+	if [[ $standardout == "true" ]]; then $commands; else $commands >/dev/null; fi 
 	if [[ $expectedtest != "" ]]; then
 	  exptest=$($expectedtest)
 	  if echo "$exptest" | grep -q "$expectedtestoutregexp"; then
@@ -83,8 +86,8 @@ function assertCheckNotContains () {
 	commands="$1"
 	expectedtest="$2"
 	expectedtestoutregexp="$3"
-	testHeadLine "Test assert with not - command: $commands - test command: $expectedtest - assertion: not $expectedtestoutregexp"
-	results=$($commands 2>&1)
+	testHeadLine "Test assert check NOT contains - command: $commands - check: $expectedtest - assertion: $expectedtestoutregexp"
+	if [[ $standardout == "true" ]]; then $commands; else $commands >/dev/null; fi 
 	if [[ $expectedtest != "" ]]; then
 	  exptest=$($expectedtest)
 	  if echo "$exptest" | grep -q "$expectedtestoutregexp"; then
