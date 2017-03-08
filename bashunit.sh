@@ -102,12 +102,13 @@ function assertCheckNotContains () {
 
 function testend () {
 	testname="$1"
+	echo
     echo "Successfull: $testsuccess"
     echo "Fails:       $testfail"
     if [[ $testfail -gt 0 ]]; then
-		printRed "Testsuite \"$testname\" red!"
+		echo "${redbg}${blackfg}Testsuite \"$testname\" red!${reset}"
 	else
-		printGreen "Testsuite \"$testname\" green!"
+		echo "${greenbg}${blackfg}Testsuite \"$testname\" green!${reset}"
 	fi
 }
 

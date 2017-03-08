@@ -23,3 +23,6 @@ assertNotContains "echo demotest" "something"
 assertCheckContains "declare testvar=somecontent" "eval echo \$testvar" "some"
 # command under test declares a variable, the check command checks that the variable does not contain the 'foo' pattern now
 assertCheckNotContains "declare testvar=somecontent" "eval echo \$testvar" "foo"
+
+# test report
+testend "Demo suite"
