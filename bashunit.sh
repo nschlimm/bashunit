@@ -28,7 +28,8 @@ function printRed () {
    echo " ${redbg}${blackfg}$headline${reset}"
 }
 
-function assert () {
+# check standard out for pattern
+function assertContains () {
 	commands="$1"
 	expectedoutregexp="$2"
 	testHeadLine "Test assert - command: $commands - assertion: $expectedoutregexp"
@@ -42,12 +43,29 @@ function assert () {
 	fi
 }
 
-function assert_with () {
+# check standard out for pattern not expected
+function assertNotContains () {
+	commands="$1"
+	expectedoutregexp="$2"
+	testHeadLine "Test assert - command: $commands - assertion: not $expectedoutregexp"
+	results=$($commands 2>&1)
+	if ! echo "$results" | grep -q "$expectedoutregexp"; then
+		printGreen "SUCCESS: not found \"$expectedoutregexp\" in command output"
+		((testsuccess++))
+	else
+		printRed "FAIL: found \"$expectedoutregexp\" in command output"
+		((testfail++))
+	fi
+}
+
+
+# check if standard out of check command contains pattern
+function assertCheckContains () {
 	commands="$1"
 	expectedtest="$2"
 	expectedtestoutregexp="$3"
 	testHeadLine "Test assert with - command: $commands - test command: $expectedtest - assertion: $expectedtestoutregexp"
-	results=$($commands 2>&1)
+	$commands
 	if [[ $expectedtest != "" ]]; then
 	  exptest=$($expectedtest)
 	  if echo "$exptest" | grep -q "$expectedtestoutregexp"; then
@@ -60,7 +78,8 @@ function assert_with () {
 	fi
 }
 
-function assert_with_not () {
+# check if standard out of check command contains pattern
+function assertCheckNotContains () {
 	commands="$1"
 	expectedtest="$2"
 	expectedtestoutregexp="$3"
