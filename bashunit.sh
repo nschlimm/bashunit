@@ -35,7 +35,7 @@ function assertContains () {
 	expectedoutregexp="$2"
 	testHeadLine "Test assert contains - command: $commands - assertion: $expectedoutregexp"
 	results=$($commands 2>&1)
-	if [[ $standardout == "true" ]]; then echo -e "$results"; fi 
+	if $standardout; then echo -e "$results"; fi 
 	if echo "$results" | grep -q "$expectedoutregexp"; then
 		printGreen "SUCCESS: found \"$expectedoutregexp\" in command output"
 		((testsuccess++))
@@ -51,7 +51,7 @@ function assertNotContains () {
 	expectedoutregexp="$2"
 	testHeadLine "Test assert contains - command: $commands - assertion: not $expectedoutregexp"
 	results=$($commands 2>&1)
-	if [[ $standardout == "true" ]]; then echo -e "$results"; fi 
+	if $standardout; then echo -e "$results"; fi 
 	if ! echo "$results" | grep -q "$expectedoutregexp"; then
 		printGreen "SUCCESS: not found \"$expectedoutregexp\" in command output"
 		((testsuccess++))
@@ -68,7 +68,7 @@ function assertCheckContains () {
 	expectedtest="$2"
 	expectedtestoutregexp="$3"
 	testHeadLine "Test assert check contains - command: $commands - check: $expectedtest - assertion: $expectedtestoutregexp"
-	if [[ $standardout == "true" ]]; then $commands; else $commands >/dev/null; fi 
+	if $standardout; then $commands; else $commands >/dev/null; fi 
 	if [[ $expectedtest != "" ]]; then
 	  exptest=$($expectedtest)
 	  if echo "$exptest" | grep -q "$expectedtestoutregexp"; then
@@ -87,7 +87,7 @@ function assertCheckNotContains () {
 	expectedtest="$2"
 	expectedtestoutregexp="$3"
 	testHeadLine "Test assert check NOT contains - command: $commands - check: $expectedtest - assertion: $expectedtestoutregexp"
-	if [[ $standardout == "true" ]]; then $commands; else $commands >/dev/null; fi 
+	if $standardout; then $commands; else $commands >/dev/null; fi 
 	if [[ $expectedtest != "" ]]; then
 	  exptest=$($expectedtest)
 	  if echo "$exptest" | grep -q "$expectedtestoutregexp"; then
