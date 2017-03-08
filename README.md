@@ -1,6 +1,6 @@
 # bashunit
 
-A tiny test framework for bash script.
+A tiny test framework for bash scripts.
 
 # Features
 
