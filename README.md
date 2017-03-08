@@ -12,4 +12,4 @@ A tiny test framework for bash script.
 
 # Usage
 
-see sample testdemo.sh script
+see sample [testdemo.sh]https://github.com/nschlimm/bashunit/blob/master/testdemo.sh script
