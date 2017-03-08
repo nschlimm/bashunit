@@ -1,5 +1,6 @@
 #!/bin/sh
-#!/bin/sh
+
+# activate the bashunit framework
 source ./bashunit.sh
 
 # check if standard out contains the pattern 'demo'
