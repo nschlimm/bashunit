@@ -34,7 +34,7 @@ function assertContains () {
 	commands="$1"
 	expectedoutregexp="$2"
 	testHeadLine "Test assert contains - command: $commands - assertion: $expectedoutregexp"
-	results=$($commands 2>&1)
+	results=$(eval $commands 2>&1)
 	if $standardout; then echo -e "$results"; fi 
 	if echo "$results" | grep -q "$expectedoutregexp"; then
 		printGreen "SUCCESS: found \"$expectedoutregexp\" in command output"
@@ -50,7 +50,7 @@ function assertNotContains () {
 	commands="$1"
 	expectedoutregexp="$2"
 	testHeadLine "Test assert contains - command: $commands - assertion: not $expectedoutregexp"
-	results=$($commands 2>&1)
+	results=$(eval $commands 2>&1)
 	if $standardout; then echo -e "$results"; fi 
 	if ! echo "$results" | grep -q "$expectedoutregexp"; then
 		printGreen "SUCCESS: not found \"$expectedoutregexp\" in command output"
