@@ -70,7 +70,8 @@ function assertCheckContains () {
 	testHeadLine "Test assert check contains - command: $commands - check: $expectedtest - assertion: $expectedtestoutregexp"
 	if $standardout; then $commands; else $commands >/dev/null; fi 
 	if [[ $expectedtest != "" ]]; then
-	  exptest=$($expectedtest)
+	  exptest=$(eval $expectedtest)
+      if $standardout; then echo -e "$exptest"; fi 
 	  if echo "$exptest" | grep -q "$expectedtestoutregexp"; then
 		printGreen "SUCCESS: found \"$expectedtestoutregexp\" in test output"
 		((testsuccess++))
@@ -89,7 +90,8 @@ function assertCheckNotContains () {
 	testHeadLine "Test assert check NOT contains - command: $commands - check: $expectedtest - assertion: $expectedtestoutregexp"
 	if $standardout; then $commands; else $commands >/dev/null; fi 
 	if [[ $expectedtest != "" ]]; then
-	  exptest=$($expectedtest)
+	  exptest=$( eval $expectedtest)
+      if $standardout; then echo -e "$exptest"; fi 
 	  if echo "$exptest" | grep -q "$expectedtestoutregexp"; then
 		printRed "FAIL: found \"$expectedtestoutregexp\" in test output"
 		((testfail++))
